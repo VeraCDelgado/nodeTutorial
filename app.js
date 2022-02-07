@@ -1,19 +1,17 @@
-//npm - global command, comes with node
-//npm --v
-//local dependency - use it only in this particular proyect
-//npm i <packageName>
+// const createReadStream = require('fs');
+let http = require('http');
+let fs = require('fs');
+//creates data in chunks es utilizado para leer archivos grandes
+const server = http
+    .createServer(function(req, res) {
 
-//global dependency - use it in any project that
-//npm install -g <packageName>
-//sudo npm install -g <packageName> (mac)
+        const fileStream = fs.createReadStream('./content/big.txt', 'utf8');
+        fileStream.on('open', () => {
+            fileStream.pipe(res)
+        })
+        fileStream.on('error', (err) => {
+            res.end(err);
+        })
+    })
 
-//package.json - manifest file (stores important info about project/package)
-//manual approach (create package.json in the root, create properties etc)
-//npm init (step by step, press enter to skip)
-//npm init -y (everything default)
-
-const _ = require('lodash');
-
-const items = [1, [2, [3, [4]]]];
-const newItems = _.flattenDeep(items);
-console.log(newItems);
+server.listen(5000);
